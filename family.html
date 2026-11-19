@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Happy Family - สื่อการสอนภาษาอังกฤษ ป.1 เรื่องครอบครัว</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brandRose: '#F43F5E',
+            brandPink: '#EC4899',
+            brandAmber: '#F59E0B'
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="styles.css">
+
+  <style>
+    .fam-nav-active {
+      background-color: #F43F5E !important; /* rose-500 */
+      color: #FFFFFF !important;
+      border-bottom-color: #BE123C !important; /* rose-700 */
+      box-shadow: 0 8px 20px -4px rgba(244, 63, 94, 0.4);
+      transform: scale(1.05);
+    }
+    
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+      #printable-family-card, #printable-family-card * {
+        visibility: visible;
+      }
+      #printable-family-card {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        margin: 0;
+        padding: 20px;
+        border: 4px solid #F43F5E;
+      }
+    }
+  </style>
+</head>
+<body class="min-h-screen text-slate-800 antialiased flex flex-col justify-between bg-rose-50/30">
+
+  <!-- Confetti Canvas -->
+  <canvas id="fam-confetti-canvas"></canvas>
+
+  <!-- TOP HEADER -->
+  <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b-4 border-rose-300 shadow-sm px-4 py-3 sm:px-6">
+    <div class="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-3">
+      
+      <!-- Brand & Back Link -->
+      <div class="flex items-center gap-3">
+        <a href="index.html" 
+           class="btn-3d text-xs sm:text-sm font-extrabold px-3 py-2 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 border-2 border-b-4 border-slate-300 shadow-sm flex items-center gap-1 cursor-pointer"
+           title="กลับไปหน้าหลัก Kiddo English ป.1">
+          <span>⬅️</span>
+          <span>หน้าหลัก ป.1</span>
+        </a>
+
+        <div class="flex items-center gap-2">
+          <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-rose-400 to-pink-300 flex items-center justify-center text-2xl shadow-md border-2 border-rose-500">
+            🏡
+          </div>
+          <div>
+            <h1 class="text-xl sm:text-2xl font-black text-slate-800 font-display leading-none flex items-center gap-1.5">
+              My Happy Family <span class="bg-rose-500 text-white text-xs px-2 py-0.5 rounded-full font-bold">ป.1</span>
+            </h1>
+            <p class="text-xs text-rose-600 font-bold mt-0.5">ครอบครัวสุขสันต์ • สื่อการสอนภาษาอังกฤษแสนสนุก</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Controls & Stars -->
+      <div class="flex items-center gap-2 sm:gap-3">
+        
+        <!-- Slow voice toggle -->
+        <button id="btn-fam-slow" 
+                class="btn-3d text-xs sm:text-sm font-bold px-3 py-2 rounded-2xl bg-white border-2 border-b-4 border-slate-200 text-slate-700 hover:border-rose-400 shadow-sm flex items-center gap-1 cursor-pointer"
+                onclick="toggleFamSlow()">
+          🐢 เสียงช้า
+        </button>
+
+        <!-- Sound toggle -->
+        <button id="btn-fam-sound" 
+                class="btn-3d text-xs sm:text-sm font-bold px-3 py-2 rounded-2xl bg-white border-2 border-b-4 border-slate-200 text-slate-700 hover:border-pink-400 shadow-sm flex items-center gap-1 cursor-pointer"
+                onclick="toggleFamSound()">
+          🔊 เปิดเสียง FX
+        </button>
+
+        <!-- Star Counter -->
+        <div id="fam-star-counter" 
+             class="flex items-center gap-1.5 bg-gradient-to-r from-amber-400 to-yellow-400 text-slate-900 px-3.5 py-1.5 rounded-2xl font-black text-base shadow-md border-2 border-b-4 border-amber-600">
+          <span class="text-xl">⭐</span>
+          <span id="fam-star-count">0</span>
+        </div>
+
+      </div>
+
+    </div>
+  </header>
+
+  <!-- NAVIGATION TABS -->
+  <div class="bg-rose-100/70 border-b-2 border-rose-200 px-4 py-3">
+    <div class="max-w-4xl mx-auto flex items-center justify-center gap-2 sm:gap-3 flex-wrap">
+      
+      <button class="fam-nav-btn fam-nav-active btn-3d font-black px-4 py-2.5 rounded-2xl text-xs sm:text-sm bg-white text-slate-700 border-2 border-b-4 border-slate-200 cursor-pointer flex items-center gap-1.5"
+              data-tab="tree"
+              onclick="switchFamTab('tree')">
+        <span>🌳</span>
+        <span>ผังครอบครัว (Family Tree)</span>
+      </button>
+
+      <button class="fam-nav-btn btn-3d font-black px-4 py-2.5 rounded-2xl text-xs sm:text-sm bg-white text-slate-700 border-2 border-b-4 border-slate-200 cursor-pointer flex items-center gap-1.5"
+              data-tab="song"
+              onclick="switchFamTab('song')">
+        <span>🖐️</span>
+        <span>เพลงนิ้วมือ (Finger Family)</span>
+      </button>
+
+      <button class="fam-nav-btn btn-3d font-black px-4 py-2.5 rounded-2xl text-xs sm:text-sm bg-white text-slate-700 border-2 border-b-4 border-slate-200 cursor-pointer flex items-center gap-1.5"
+              data-tab="dialogue"
+              onclick="switchFamTab('dialogue')">
+        <span>🗣️</span>
+        <span>ประโยคสนทนา (Sentences)</span>
+      </button>
+
+      <button class="fam-nav-btn btn-3d font-black px-4 py-2.5 rounded-2xl text-xs sm:text-sm bg-white text-slate-700 border-2 border-b-4 border-slate-200 cursor-pointer flex items-center gap-1.5"
+              data-tab="games"
+              onclick="switchFamTab('games')">
+        <span>🎮</span>
+        <span>มินิเกมฝึกทักษะ</span>
+      </button>
+
+      <button class="fam-nav-btn btn-3d font-black px-4 py-2.5 rounded-2xl text-xs sm:text-sm bg-white text-slate-700 border-2 border-b-4 border-slate-200 cursor-pointer flex items-center gap-1.5"
+              data-tab="album"
+              onclick="switchFamTab('album')">
+        <span>🖼️</span>
+        <span>การ์ดครอบครัวของฉัน</span>
+      </button>
+
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <main class="max-w-6xl mx-auto w-full px-4 py-6 flex-1">
+
+    <!-- ============================================================== -->
+    <!-- TAB 1: INTERACTIVE FAMILY TREE                                -->
+    <!-- ============================================================== -->
+    <section id="fam-tab-tree" class="fam-tab-section">
+      
+      <!-- Banner -->
+      <div class="bg-gradient-to-r from-rose-500 via-pink-500 to-rose-600 rounded-3xl p-6 text-white shadow-lg mb-8 flex flex-col md:flex-row items-center justify-between gap-4">
+        <div>
+          <h2 class="text-2xl sm:text-3xl font-black font-display flex items-center gap-2">
+            🌳 ผังครอบครัวมีชีวิต (Interactive Family Tree)
+          </h2>
+          <p class="text-rose-100 text-sm mt-1">
+            แตะที่การ์ดสมาชิกครอบครัว เพื่อฟังเสียงอ่านภาษาอังกฤษ ประโยคแนะนำตัว และคำอ่านภาษาไทย
+          </p>
+        </div>
+        <div class="bg-white/20 backdrop-blur-md px-4 py-2 rounded-2xl text-xs font-bold flex items-center gap-2">
+          <span>💡 คลิกที่การ์ดเพื่อขยายดูประโยค</span>
+        </div>
+      </div>
+
+      <!-- Tree Container -->
+      <div id="family-tree-container">
+        <!-- Rendered by family.js -->
+      </div>
+
+    </section>
+
+    <!-- ============================================================== -->
+    <!-- TAB 2: FINGER FAMILY SONG PUPPET SHOW                         -->
+    <!-- ============================================================== -->
+    <section id="fam-tab-song" class="fam-tab-section hidden">
+      
+      <!-- Song Banner -->
+      <div class="bg-gradient-to-r from-amber-400 via-orange-400 to-amber-500 rounded-3xl p-6 text-slate-900 shadow-lg mb-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div>
+          <h2 class="text-2xl sm:text-3xl font-black font-display flex items-center gap-2">
+            🖐️ เพลงนิ้วมือครอบครัว (The Finger Family Song)
+          </h2>
+          <p class="text-slate-800 text-sm font-medium mt-1">
+            เพลงภาษาอังกฤษยอดฮิตระดับ ป.1 แตะที่นิ้วมือแต่ละนิ้วเพื่อฟังเสียงร้องและดนตรีทำนองสดใส
+          </p>
+        </div>
+
+        <button id="btn-play-full-song"
+                class="btn-3d px-5 py-3 rounded-2xl bg-white text-slate-900 font-black text-sm shadow-md border-2 border-b-4 border-amber-600 hover:bg-amber-100 transition cursor-pointer flex items-center gap-2 whitespace-nowrap"
+                onclick="playFullSong()">
+          <span>▶️</span>
+          <span>ร้องเพลงทั้งหมด (Full Song)</span>
+        </button>
+      </div>
+
+      <!-- Karaoke Teleprompter Box -->
+      <div id="finger-song-lyrics" 
+           class="bg-white rounded-3xl p-6 border-4 border-amber-200 shadow-md text-center max-w-2xl mx-auto mb-8 min-h-[140px] flex flex-col items-center justify-center">
+        <span class="text-4xl mb-1">🎶</span>
+        <div class="text-lg font-black text-slate-800 font-display">แตะที่ตัวละครนิ้วมือด้านล่างเพื่อเริ่มร้องเพลงนะจ๊ะ!</div>
+        <p class="text-xs text-slate-400 mt-1">"Daddy finger, Daddy finger, where are you? Here I am..."</p>
+      </div>
+
+      <!-- 5 Finger Puppets Grid -->
+      <div id="finger-puppets-container" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+        <!-- Rendered by family.js -->
+      </div>
+
+    </section>
+
+    <!-- ============================================================== -->
+    <!-- TAB 3: SENTENCES & DIALOGUE                                   -->
+    <!-- ============================================================== -->
+    <section id="fam-tab-dialogue" class="fam-tab-section hidden">
+      
+      <!-- Banner -->
+      <div class="bg-gradient-to-r from-sky-400 to-blue-500 rounded-3xl p-6 text-white shadow-lg mb-6">
+        <h2 class="text-2xl sm:text-3xl font-black font-display flex items-center gap-2">
+          🗣️ ประโยคสนทนา ป.1 เรื่องครอบครัว (Sentences)
+        </h2>
+        <p class="text-sky-100 text-sm mt-1">
+          ฝึกถาม-ตอบประโยคพื้นฐาน: "Who is this?", "This is my father.", "I love my family!"
+        </p>
+      </div>
+
+      <!-- Dialogue Cards List -->
+      <div id="family-dialogue-container" class="space-y-4">
+        <!-- Rendered by family.js -->
+      </div>
+
+    </section>
+
+    <!-- ============================================================== -->
+    <!-- TAB 4: FAMILY MINI-GAMES                                      -->
+    <!-- ============================================================== -->
+    <section id="fam-tab-games" class="fam-tab-section hidden">
+      
+      <!-- Games Banner -->
+      <div class="bg-gradient-to-r from-rose-500 to-pink-600 rounded-3xl p-6 text-white shadow-lg mb-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div>
+          <h2 class="text-2xl sm:text-3xl font-black font-display flex items-center gap-2">
+            🎮 มินิเกมครอบครัวแสนสนุก
+          </h2>
+          <p class="text-rose-100 text-sm mt-1">
+            ทบทวนคำศัพท์และประโยคเรื่องครอบครัว พร้อมสะสมดาว ⭐
+          </p>
+        </div>
+
+        <div class="flex items-center gap-2 bg-white/20 backdrop-blur-sm p-1.5 rounded-2xl">
+          <button class="fam-game-nav-btn text-xs sm:text-sm font-bold px-3.5 py-2 rounded-xl bg-rose-500 text-white shadow-md transition cursor-pointer"
+                  data-fgame="quiz"
+                  onclick="switchFamGame('quiz')">
+            ❓ ทายซิ...ใครเอ่ย?
+          </button>
+          <button class="fam-game-nav-btn text-xs sm:text-sm font-bold px-3.5 py-2 rounded-xl bg-white text-slate-700 transition cursor-pointer"
+                  data-fgame="memory"
+                  onclick="switchFamGame('memory')">
+            🃏 จับคู่การ์ดครอบครัว
+          </button>
+        </div>
+      </div>
+
+      <!-- GAME 1: QUIZ VIEW -->
+      <div id="fam-gview-quiz" class="fam-game-view bg-rose-50/60 border-4 border-rose-200 rounded-3xl p-6 shadow-md">
+        
+        <!-- Score bar -->
+        <div class="flex items-center justify-between bg-white rounded-2xl p-4 shadow-sm border-2 border-rose-100 mb-6">
+          <div class="font-extrabold text-slate-700">
+            รอบที่: <span id="fam-quiz-round" class="text-rose-600 font-black text-lg">1 / 5</span>
+          </div>
+          <div class="font-extrabold text-slate-700 flex items-center gap-1.5">
+            คะแนน: <span id="fam-quiz-score" class="text-amber-500 font-black text-xl">0</span> ⭐
+          </div>
+          <button class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold transition cursor-pointer"
+                  onclick="startFamilyQuiz()">
+            🔄 เริ่มใหม่
+          </button>
+        </div>
+
+        <!-- Speaker button prompt -->
+        <div class="flex flex-col items-center justify-center my-6">
+          <button class="btn-3d w-28 h-28 rounded-3xl bg-gradient-to-tr from-rose-400 to-pink-300 border-4 border-b-8 border-rose-600 flex flex-col items-center justify-center text-white shadow-xl hover:scale-105 transition cursor-pointer"
+                  onclick="playQuizPromptAudio()">
+            <span class="text-5xl mb-1 animate-pulse">🔊</span>
+            <span class="text-xs font-black">กดฟังประโยค</span>
+          </button>
+          <div id="fam-quiz-feedback" class="text-sm font-bold text-slate-600 mt-4 text-center min-h-[24px]">
+            กดฟังเสียงประโยค แล้วทายว่าพูดถึงใครนะจ๊ะ 👂✨
+          </div>
+        </div>
+
+        <!-- 4 Options -->
+        <div id="fam-quiz-options" class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-6">
+          <!-- Rendered by family.js -->
+        </div>
+
+      </div>
+
+      <!-- GAME 2: MEMORY VIEW -->
+      <div id="fam-gview-memory" class="fam-game-view hidden bg-pink-50/60 border-4 border-pink-200 rounded-3xl p-6 shadow-md">
+        
+        <!-- Stats bar -->
+        <div class="flex items-center justify-between bg-white rounded-2xl p-4 shadow-sm border-2 border-pink-100 mb-6">
+          <div class="font-extrabold text-slate-700">
+            จับคู่ได้: <span id="fam-memory-pairs" class="text-emerald-600 font-black text-lg">0 / 4</span>
+          </div>
+          <div class="font-extrabold text-slate-700">
+            จำนวนครั้ง: <span id="fam-memory-moves" class="text-pink-600 font-black text-lg">0</span>
+          </div>
+          <button class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold transition cursor-pointer"
+                  onclick="startFamilyMemory()">
+            🔄 สับการ์ดใหม่
+          </button>
+        </div>
+
+        <!-- Grid -->
+        <div id="fam-memory-grid" class="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-xl mx-auto">
+          <!-- Rendered by family.js -->
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ============================================================== -->
+    <!-- TAB 5: MY FAMILY ALBUM CREATOR                                -->
+    <!-- ============================================================== -->
+    <section id="fam-tab-album" class="fam-tab-section hidden">
+      
+      <!-- Banner -->
+      <div class="bg-gradient-to-r from-emerald-400 to-teal-500 rounded-3xl p-6 text-white shadow-lg mb-6">
+        <h2 class="text-2xl sm:text-3xl font-black font-display flex items-center gap-2">
+          🖼️ สร้างการ์ดรูปภาพครอบครัวของฉัน (My Family Portrait)
+        </h2>
+        <p class="text-emerald-100 text-sm mt-1">
+          เลือกสมาชิกในครอบครัวของหนูเอง พิมพ์ชื่อเล่น แล้วพิมพ์หรือบันทึกเป็นการ์ดสุดน่ารักไปอวดคุณครู!
+        </p>
+      </div>
+
+      <!-- Customization Controls -->
+      <div class="bg-white rounded-3xl p-6 border-4 border-slate-100 shadow-md mb-8">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+          
+          <!-- Name Input -->
+          <div>
+            <label class="block text-xs font-black text-slate-600 mb-1">
+              ✏️ ชื่อหรือชื่อเล่นของนักเรียน:
+            </label>
+            <input type="text" 
+                   id="student-name-input"
+                   placeholder="เช่น น้องพรีม, Alex, น้องออโต้"
+                   class="w-full px-4 py-2.5 rounded-2xl border-2 border-slate-200 focus:border-rose-400 focus:outline-none font-bold text-slate-800 text-sm"
+                   oninput="updateStudentName(this.value)">
+          </div>
+
+          <!-- Select Members instruction -->
+          <div class="md:col-span-2">
+            <label class="block text-xs font-black text-slate-600 mb-1">
+              👨‍👩‍👧‍👦 เลือกสมาชิกในครอบครัวของหนู (แตะเพื่อเพิ่ม/ลด):
+            </label>
+            <div id="album-member-toggles" class="flex flex-wrap gap-2">
+              <!-- Rendered by family.js -->
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Printable Family Card Preview -->
+      <div id="printable-family-card" 
+           class="bg-gradient-to-br from-rose-100 via-pink-50 to-amber-100 border-8 border-dashed border-rose-300 rounded-3xl p-8 max-w-2xl mx-auto shadow-xl text-center relative overflow-hidden">
+        
+        <div class="absolute -top-6 -left-6 text-7xl opacity-20">💖</div>
+        <div class="absolute -bottom-6 -right-6 text-7xl opacity-20">🏡</div>
+
+        <div class="text-4xl mb-2 animate-bounce">🏡</div>
+        <h3 id="album-portrait-title" class="text-2xl sm:text-3xl font-black text-rose-600 font-display">
+          My Happy Family by น้องคนเก่ง
+        </h3>
+        <p class="text-slate-600 text-sm font-bold mt-1 mb-6">
+          "I love my family with all my heart!" ❤️
+        </p>
+
+        <!-- Portrait Members Grid -->
+        <div id="album-portrait-members" class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3 my-4">
+          <!-- Rendered by family.js -->
+        </div>
+
+        <div class="mt-6 pt-4 border-t-2 border-rose-200 text-xs font-bold text-rose-500 flex justify-between items-center">
+          <span>🎒 วิชาภาษาอังกฤษ ชั้นประถมศึกษาปีที่ 1</span>
+          <span>⭐ ดาวคนเก่ง</span>
+        </div>
+      </div>
+
+      <!-- Action Button -->
+      <div class="text-center mt-6">
+        <button class="btn-3d px-6 py-3.5 bg-rose-500 text-white font-black rounded-2xl border-b-4 border-rose-700 shadow-lg hover:bg-rose-400 transition cursor-pointer inline-flex items-center gap-2"
+                onclick="printAlbumPortrait()">
+          <span>🖨️ พิมพ์หรือบันทึกเป็นการ์ด (Print Card)</span>
+        </button>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- ============================================================== -->
+  <!-- MODAL: FAMILY MEMBER EXPANDED PROFILE                          -->
+  <!-- ============================================================== -->
+  <div id="fam-member-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+    <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-md w-full border-4 border-rose-300 shadow-2xl relative text-center flex flex-col items-center animate-in fade-in zoom-in duration-200">
+      
+      <!-- Close Button -->
+      <button class="absolute top-4 right-4 w-9 h-9 rounded-full bg-slate-100 hover:bg-rose-100 hover:text-rose-600 text-slate-500 font-black flex items-center justify-center transition cursor-pointer"
+              onclick="closeMemberModal()">
+        ✕
+      </button>
+
+      <!-- Avatar -->
+      <div id="modal-fam-icon" class="text-7xl mb-2 mt-2 transform hover:scale-110 transition">
+        👨
+      </div>
+
+      <!-- English Word -->
+      <div id="modal-fam-word" class="text-3xl font-black text-rose-600 font-display">
+        Father
+      </div>
+
+      <div id="modal-fam-short" class="text-xs font-bold text-amber-600 bg-amber-50 px-3 py-1 rounded-full border border-amber-200 mt-1">
+        ชื่อเรียก: Dad / Daddy
+      </div>
+
+      <!-- Phonics & Meaning -->
+      <div class="bg-rose-50 rounded-2xl p-4 w-full my-3 border border-rose-100">
+        <div id="modal-fam-phonetic" class="text-xs font-bold text-rose-600 mb-1">
+          คำอ่าน: [ฟา-เธอร์]
+        </div>
+        <div id="modal-fam-thai" class="text-lg font-black text-slate-800">
+          คุณพ่อ
+        </div>
+        <div id="modal-fam-sentence" class="text-sm font-semibold text-slate-600 italic mt-2">
+          "This is my father. He is strong."
+        </div>
+        <div id="modal-fam-greeting" class="text-xs font-bold text-emerald-600 mt-1">
+          💬 "Good job, kiddo!"
+        </div>
+      </div>
+
+      <!-- Audio Action Button -->
+      <button class="w-full py-3.5 bg-gradient-to-r from-rose-500 to-pink-500 text-white font-extrabold rounded-2xl shadow-lg border-b-4 border-rose-700 hover:brightness-105 active:translate-y-1 transition flex items-center justify-center gap-2 text-sm cursor-pointer"
+              onclick="if(famState.selectedMember) playMemberSpeech(famState.selectedMember.id)">
+        <span>🔊</span>
+        <span>ฟังเสียงอ่านและประโยคภาษาอังกฤษ</span>
+      </button>
+
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="bg-white border-t-2 border-rose-100 py-4 px-6 text-center text-xs text-slate-400 mt-10">
+    <p class="font-medium">
+      💖 สื่อการสอนเสริมทักษะภาษาอังกฤษ ป.1 เรื่อง "My Happy Family" • ออกแบบให้เข้ากับพัฒนาการเด็กปฐมวัยและประถมต้น
+    </p>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="data.js"></script>
+  <script src="family.js"></script>
+</body>
+</html>

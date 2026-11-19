@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kiddo English ป.1 - สื่อการสอนภาษาอังกฤษ ป.1 แสนสนุก</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              yellow: '#F59E0B',
+              sky: '#0EA5E9',
+              mint: '#10B981',
+              coral: '#F43F5E',
+              purple: '#8B5CF6'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Custom Styles & Kid-friendly Fonts -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="min-h-screen text-slate-800 antialiased flex flex-col justify-between">
+
+  <!-- Confetti Canvas -->
+  <canvas id="confetti-canvas"></canvas>
+
+  <!-- HEADER / TOP BAR -->
+  <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b-4 border-amber-300 shadow-sm px-4 py-3 sm:px-6">
+    <div class="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-3">
+      
+      <!-- Brand Logo & Title -->
+      <div class="flex items-center gap-3 cursor-pointer" onclick="switchTab('alphabet')">
+        <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-amber-400 to-yellow-300 flex items-center justify-center text-3xl shadow-md border-2 border-amber-500 transform hover:rotate-6 transition">
+          🎒
+        </div>
+        <div>
+          <h1 class="text-xl sm:text-2xl font-black text-slate-800 font-display flex items-center gap-1.5 leading-none">
+            Kiddo English <span class="bg-amber-400 text-slate-900 text-xs px-2 py-0.5 rounded-full font-bold">ป.1</span>
+          </h1>
+          <p class="text-xs text-slate-500 font-bold mt-0.5">สื่อการสอนภาษาอังกฤษแสนสนุก ออกแบบสำหรับวัยประถม 1</p>
+        </div>
+      </div>
+
+      <!-- Controls & Stars Counter -->
+      <div class="flex items-center gap-2 sm:gap-3">
+        
+        <!-- Slow voice toggle (โหมดเสียงอ่านช้า) -->
+        <button id="btn-slow-speech" 
+                class="btn-3d text-xs sm:text-sm font-bold px-3 py-2 rounded-2xl bg-white border-2 border-b-4 border-slate-200 text-slate-700 hover:border-amber-400 shadow-sm flex items-center gap-1 cursor-pointer"
+                onclick="toggleSlowSpeech()"
+                title="สลับโหมดอ่านช้าสำหรับเด็ก">
+          🐢 เสียงช้า
+        </button>
+
+        <!-- Sound FX toggle -->
+        <button id="btn-sound-mute" 
+                class="btn-3d text-xs sm:text-sm font-bold px-3 py-2 rounded-2xl bg-white border-2 border-b-4 border-slate-200 text-slate-700 hover:border-sky-400 shadow-sm flex items-center gap-1 cursor-pointer"
+                onclick="toggleSoundMute()"
+                title="เปิด/ปิดเสียงเอฟเฟกต์">
+          🔊 เปิดเสียง FX
+        </button>
+
+        <!-- Fullscreen Button for Classroom Projector -->
+        <button class="btn-3d hidden sm:flex text-sm font-bold px-3 py-2 rounded-2xl bg-white border-2 border-b-4 border-slate-200 text-slate-700 hover:border-purple-400 shadow-sm items-center gap-1 cursor-pointer"
+                onclick="toggleFullscreen()"
+                title="แสดงผลเต็มจอสำหรับจอโปรเจกเตอร์หรือทีวี">
+          🖥️ เต็มจอ
+        </button>
+
+        <!-- Star Counter Box -->
+        <div id="star-counter-box" 
+             class="flex items-center gap-1.5 bg-gradient-to-r from-amber-400 to-yellow-400 text-slate-900 px-3.5 py-1.5 rounded-2xl font-black text-base shadow-md border-2 border-b-4 border-amber-600 cursor-pointer"
+             onclick="switchTab('stickers')"
+             title="คลิกเพื่อดูสติกเกอร์รางวัลของคุณ!">
+          <span class="text-xl">⭐</span>
+          <span id="star-count">0</span>
+        </div>
+
+      </div>
+
+    </div>
+  </header>
+
+  <!-- MAIN NAVIGATION TABS -->
+  <div class="bg-amber-100/60 border-b-2 border-amber-200 px-4 py-3">
+    <div class="max-w-4xl mx-auto flex items-center justify-center gap-2 sm:gap-4 flex-wrap">
+      
+      <button class="nav-btn nav-active btn-3d font-black px-4 py-2.5 rounded-2xl text-sm sm:text-base bg-white text-slate-700 border-2 border-b-4 border-slate-200 cursor-pointer flex items-center gap-1.5"
+              data-tab="alphabet"
+              onclick="switchTab('alphabet')">
+        <span>🔤</span>
+        <span>A - Z และโฟนิกส์</span>
+      </button>
+
+      <button class="nav-btn btn-3d font-black px-4 py-2.5 rounded-2xl text-sm sm:text-base bg-white text-slate-700 border-2 border-b-4 border-slate-200 cursor-pointer flex items-center gap-1.5"
+              data-tab="vocab"
+              onclick="switchTab('vocab')">
+        <span>📚</span>
+        <span>หมวดหมู่คำศัพท์</span>
+      </button>
+
+      <button class="nav-btn btn-3d font-black px-4 py-2.5 rounded-2xl text-sm sm:text-base bg-white text-slate-700 border-2 border-b-4 border-slate-200 cursor-pointer flex items-center gap-1.5"
+              data-tab="games"
+              onclick="switchTab('games')">
+        <span>🎮</span>
+        <span>มินิเกมฝึกทักษะ</span>
+      </button>
+
+      <button class="nav-btn btn-3d font-black px-4 py-2.5 rounded-2xl text-sm sm:text-base bg-white text-slate-700 border-2 border-b-4 border-slate-200 cursor-pointer flex items-center gap-1.5"
+              data-tab="stickers"
+              onclick="switchTab('stickers')">
+        <span>🏆</span>
+        <span>สมุดสติกเกอร์</span>
+      </button>
+
+      <a href="family.html" 
+         class="btn-3d font-black px-4 py-2.5 rounded-2xl text-sm sm:text-base bg-rose-500 hover:bg-rose-600 text-white border-2 border-b-4 border-rose-700 shadow-md flex items-center gap-1.5 cursor-pointer transform hover:scale-105 transition"
+         title="เปิดเว็บแอปบทเรียนเรื่องครอบครัว (My Family)">
+        <span>🏡</span>
+        <span>บทเรียน Family</span>
+      </a>
+
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT CONTAINER -->
+  <main class="max-w-6xl mx-auto w-full px-4 py-6 flex-1">
+
+    <!-- ========================================== -->
+    <!-- TAB 1: ALPHABET & PHONICS (A - Z)          -->
+    <!-- ========================================== -->
+    <section id="tab-alphabet" class="tab-content">
+      
+      <!-- Alphabet Header & Controls -->
+      <div class="bg-gradient-to-r from-sky-400 to-blue-500 rounded-3xl p-6 text-white shadow-lg mb-6 flex flex-col md:flex-row items-center justify-between gap-4">
+        <div>
+          <h2 class="text-2xl sm:text-3xl font-black font-display flex items-center gap-2">
+            🔤 ตัวอักษรภาษาอังกฤษและโฟนิกส์ (Phonics A-Z)
+          </h2>
+          <p class="text-sky-100 text-sm mt-1">
+            แตะที่การ์ดเพื่อฟังเสียงออกเสียงภาษาอังกฤษและเสียงโฟนิกส์ สะสมดาวทุกครั้งที่ฝึกอ่าน!
+          </p>
+        </div>
+
+        <!-- Filter Buttons: All / Vowels / Consonants -->
+        <div class="flex items-center gap-2 bg-white/20 backdrop-blur-sm p-1.5 rounded-2xl">
+          <button class="filter-btn text-xs sm:text-sm font-bold px-3 py-1.5 rounded-xl bg-sky-500 text-white transition cursor-pointer"
+                  data-filter="all"
+                  onclick="setLetterFilter('all')">
+            ทั้งหมด (26)
+          </button>
+          <button class="filter-btn text-xs sm:text-sm font-bold px-3 py-1.5 rounded-xl bg-white text-slate-700 transition cursor-pointer"
+                  data-filter="vowels"
+                  onclick="setLetterFilter('vowels')">
+            สระ (A E I O U)
+          </button>
+          <button class="filter-btn text-xs sm:text-sm font-bold px-3 py-1.5 rounded-xl bg-white text-slate-700 transition cursor-pointer"
+                  data-filter="consonants"
+                  onclick="setLetterFilter('consonants')">
+            พยัญชนะ
+          </button>
+        </div>
+      </div>
+
+      <!-- Alphabet Grid (26 Cards) -->
+      <div id="alphabet-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 sm:gap-5">
+        <!-- Rendered by app.js -->
+      </div>
+
+    </section>
+
+    <!-- ========================================== -->
+    <!-- TAB 2: VOCABULARY CATEGORIES               -->
+    <!-- ========================================== -->
+    <section id="tab-vocab" class="tab-content hidden">
+      
+      <!-- Vocab Banner -->
+      <div class="bg-gradient-to-r from-amber-400 to-orange-400 rounded-3xl p-6 text-slate-900 shadow-lg mb-6">
+        <h2 class="text-2xl sm:text-3xl font-black font-display flex items-center gap-2">
+          📚 คำศัพท์สำคัญระดับชั้น ป.1 (Vocabulary)
+        </h2>
+        <p class="text-slate-800 text-sm font-medium mt-1">
+          เรียนรู้คำศัพท์พื้นฐาน 6 หมวดหมู่ใกล้ตัว พร้อมคำอ่าน คำแปล และเสียงพูดเจ้าของภาษา
+        </p>
+      </div>
+
+      <!-- Category Filter Pills (Horizontal Scrollable) -->
+      <div id="vocab-category-selector" class="flex items-center gap-2.5 overflow-x-auto pb-4 mb-6 scrollbar-none">
+        <!-- Rendered by app.js -->
+      </div>
+
+      <!-- Vocabulary Grid -->
+      <div id="vocab-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-5">
+        <!-- Rendered by app.js -->
+      </div>
+
+    </section>
+
+    <!-- ========================================== -->
+    <!-- TAB 3: FUN EDUCATIONAL GAMES               -->
+    <!-- ========================================== -->
+    <section id="tab-games" class="tab-content hidden">
+      
+      <!-- Games Hub Header -->
+      <div class="bg-gradient-to-r from-purple-500 to-indigo-600 rounded-3xl p-6 text-white shadow-lg mb-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div>
+          <h2 class="text-2xl sm:text-3xl font-black font-display flex items-center gap-2">
+            🎮 มินิเกมฝึกภาษาอังกฤษ ป.1
+          </h2>
+          <p class="text-purple-100 text-sm mt-1">
+            เล่นเกมทบทวนบทเรียน สะสมคะแนนและเหรียญดาวรางวัลแสนสนุก!
+          </p>
+        </div>
+
+        <!-- Game Selector Buttons -->
+        <div class="flex items-center gap-2 bg-white/20 backdrop-blur-sm p-1.5 rounded-2xl flex-wrap justify-center">
+          <button class="game-nav-btn text-xs sm:text-sm font-bold px-3.5 py-2 rounded-xl bg-purple-600 text-white shadow-md transition cursor-pointer"
+                  data-game="listen"
+                  onclick="switchGameTab('listen')">
+            👂 ฟังเสียงทายคำ
+          </button>
+          <button class="game-nav-btn text-xs sm:text-sm font-bold px-3.5 py-2 rounded-xl bg-white text-slate-700 transition cursor-pointer"
+                  data-game="memory"
+                  onclick="switchGameTab('memory')">
+            🃏 เปิดป้ายจับคู่
+          </button>
+          <button class="game-nav-btn text-xs sm:text-sm font-bold px-3.5 py-2 rounded-xl bg-white text-slate-700 transition cursor-pointer"
+                  data-game="spelling"
+                  onclick="switchGameTab('spelling')">
+            🐝 ผึ้งน้อยสะกดคำ
+          </button>
+        </div>
+      </div>
+
+      <!-- GAME 1 VIEW: LISTEN & PICK -->
+      <div id="game-view-listen" class="game-view bg-purple-50/60 border-4 border-purple-200 rounded-3xl p-6 shadow-md">
+        
+        <!-- Score Bar -->
+        <div class="flex items-center justify-between bg-white rounded-2xl p-4 shadow-sm border-2 border-purple-100 mb-6">
+          <div class="font-extrabold text-slate-700">
+            รอบที่: <span id="listen-round" class="text-purple-600 font-black text-lg">1 / 5</span>
+          </div>
+          <div class="font-extrabold text-slate-700 flex items-center gap-1.5">
+            คะแนน: <span id="listen-score" class="text-amber-500 font-black text-xl">0</span> ⭐
+          </div>
+          <button class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold transition cursor-pointer"
+                  onclick="startListenGame()">
+            🔄 เริ่มใหม่
+          </button>
+        </div>
+
+        <!-- Big Audio Prompt Button -->
+        <div class="flex flex-col items-center justify-center my-6">
+          <button class="btn-3d w-28 h-28 rounded-3xl bg-gradient-to-tr from-amber-400 to-yellow-300 border-4 border-b-8 border-amber-600 flex flex-col items-center justify-center text-slate-900 shadow-xl hover:scale-105 transition cursor-pointer"
+                  onclick="playTargetAudio()"
+                  title="กดเพื่อฟังเสียงซ้ำ">
+            <span class="text-5xl mb-1 animate-pulse">🔊</span>
+            <span class="text-xs font-black">กดฟังเสียง</span>
+          </button>
+          <div id="listen-feedback" class="text-sm font-bold text-slate-600 mt-4 text-center min-h-[24px]">
+            กดที่ปุ่มลำโพงเพื่อฟัง แล้วเลือกรูปภาพที่ถูกต้องนะจ๊ะ 👂✨
+          </div>
+        </div>
+
+        <!-- 4 Options Grid -->
+        <div id="listen-options-grid" class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-6">
+          <!-- Rendered by app.js -->
+        </div>
+
+      </div>
+
+      <!-- GAME 2 VIEW: MEMORY MATCH -->
+      <div id="game-view-memory" class="game-view hidden bg-indigo-50/60 border-4 border-indigo-200 rounded-3xl p-6 shadow-md">
+        
+        <!-- Stats bar -->
+        <div class="flex items-center justify-between bg-white rounded-2xl p-4 shadow-sm border-2 border-indigo-100 mb-6">
+          <div class="font-extrabold text-slate-700">
+            จับคู่ได้: <span id="memory-pairs" class="text-emerald-600 font-black text-lg">0 / 6</span>
+          </div>
+          <div class="font-extrabold text-slate-700">
+            จำนวนครั้งที่เปิด: <span id="memory-moves" class="text-indigo-600 font-black text-lg">0</span>
+          </div>
+          <button class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold transition cursor-pointer"
+                  onclick="startMemoryGame()">
+            🔄 สับการ์ดใหม่
+          </button>
+        </div>
+
+        <!-- 12 Cards Grid (4 columns x 3 rows) -->
+        <div id="memory-grid" class="grid grid-cols-3 sm:grid-cols-4 gap-3 sm:gap-4 max-w-2xl mx-auto">
+          <!-- Rendered by app.js -->
+        </div>
+
+      </div>
+
+      <!-- GAME 3 VIEW: SPELLING BEE -->
+      <div id="game-view-spelling" class="game-view hidden bg-amber-50/60 border-4 border-amber-200 rounded-3xl p-6 shadow-md">
+        
+        <!-- Top Stats -->
+        <div class="flex items-center justify-between bg-white rounded-2xl p-4 shadow-sm border-2 border-amber-100 mb-6">
+          <div class="font-extrabold text-slate-700 text-sm">
+            🐝 ผึ้งน้อยสะกดคำศัพท์ (3-4 ตัวอักษร)
+          </div>
+          <div class="font-extrabold text-slate-700 flex items-center gap-1.5">
+            คะแนน: <span id="spelling-score" class="text-amber-500 font-black text-xl">0</span> ⭐
+          </div>
+        </div>
+
+        <!-- Big Clue & Icon -->
+        <div class="flex flex-col items-center justify-center my-4">
+          <div id="spelling-icon" class="text-7xl mb-2 animate-bounce">
+            🐱
+          </div>
+          <div id="spelling-hint" class="text-base font-extrabold text-slate-700 bg-white px-4 py-1 rounded-full border border-amber-200 shadow-sm">
+            คำใบ้: แมวเหมียว
+          </div>
+        </div>
+
+        <!-- Letter Slots (Where letters get placed) -->
+        <div id="spelling-slots" class="flex justify-center gap-3 sm:gap-4 my-6">
+          <!-- Rendered by app.js -->
+        </div>
+
+        <!-- Scrambled Letters Pool (Letters to click) -->
+        <div class="text-center">
+          <p class="text-xs text-slate-500 font-bold mb-2">แตะตัวอักษรเพื่อเรียงคำศัพท์ (แตะที่ช่องเพื่อยกเลิก)</p>
+          <div id="spelling-letters-pool" class="flex justify-center gap-3 sm:gap-4 flex-wrap">
+            <!-- Rendered by app.js -->
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ========================================== -->
+    <!-- TAB 4: STICKER BOOK & REWARDS              -->
+    <!-- ========================================== -->
+    <section id="tab-stickers" class="tab-content hidden">
+      
+      <!-- Trophy Banner -->
+      <div class="bg-gradient-to-r from-amber-400 via-yellow-400 to-amber-500 rounded-3xl p-6 text-slate-900 shadow-lg mb-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div>
+          <h2 class="text-2xl sm:text-3xl font-black font-display flex items-center gap-2">
+            🏆 สมุดสะสมเหรียญและสติกเกอร์คนเก่ง
+          </h2>
+          <p class="text-slate-800 text-sm font-medium mt-1">
+            ฝึกอ่าน ออกเสียง และเล่นเกมเพื่อสะสมดาว ⭐ ยิ่งสะสมมาก ยิ่งปลดล็อกเหรียญรางวัลสุดพิเศษ!
+          </p>
+        </div>
+
+        <button class="px-4 py-2 bg-white/70 hover:bg-white text-rose-600 rounded-2xl text-xs font-bold transition shadow-sm border border-rose-200 cursor-pointer"
+                onclick="resetProgress()">
+          🗑️ รีเซ็ตคะแนน
+        </button>
+      </div>
+
+      <!-- Stickers Grid -->
+      <div id="stickers-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        <!-- Rendered by app.js -->
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- ========================================== -->
+  <!-- MODAL: LETTER DETAIL (BIG DISPLAY)         -->
+  <!-- ========================================== -->
+  <div id="letter-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+    <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-md w-full border-4 border-sky-300 shadow-2xl relative text-center flex flex-col items-center animate-in fade-in zoom-in duration-200">
+      
+      <!-- Close Button -->
+      <button class="absolute top-4 right-4 w-9 h-9 rounded-full bg-slate-100 hover:bg-rose-100 hover:text-rose-600 text-slate-500 font-black flex items-center justify-center transition cursor-pointer"
+              onclick="closeLetterModal()">
+        ✕
+      </button>
+
+      <!-- Big Letter Display -->
+      <div id="modal-letter-pair" class="text-7xl font-black text-sky-600 font-display mt-2">
+        A <span class="text-amber-500">a</span>
+      </div>
+
+      <div id="modal-letter-phonics" class="text-base font-bold text-amber-600 bg-amber-50 border border-amber-200 px-4 py-1.5 rounded-2xl my-3">
+        เสียงโฟนิกส์: /æ/ แอะ
+      </div>
+
+      <!-- Example Word & Illustration -->
+      <div class="bg-sky-50 rounded-3xl p-6 w-full my-3 flex flex-col items-center border border-sky-100">
+        <div id="modal-word-icon" class="text-6xl mb-2">🍎</div>
+        <div id="modal-word-eng" class="text-3xl font-black text-slate-800 font-display">Apple</div>
+        <div id="modal-word-thai" class="text-base font-bold text-sky-700 mt-1">แอปเปิ้ล</div>
+        <div id="modal-example" class="text-xs text-slate-500 italic mt-2">"An apple is red."</div>
+      </div>
+
+      <!-- Audio Action Button -->
+      <button class="w-full py-3.5 bg-gradient-to-r from-sky-400 to-blue-500 text-white font-extrabold rounded-2xl shadow-lg border-b-4 border-blue-700 hover:brightness-105 active:translate-y-1 transition flex items-center justify-center gap-2 text-base cursor-pointer"
+              onclick="if(state.selectedLetter) playLetterAudio(state.selectedLetter.letter, state.selectedLetter.word)">
+        <span>🔊</span>
+        <span>กดฟังเสียงอ่านโฟนิกส์และคำศัพท์</span>
+      </button>
+
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- MODAL: REWARD UNLOCKED CELEBRATION         -->
+  <!-- ========================================== -->
+  <div id="reward-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+    <div class="bg-white rounded-3xl p-8 max-w-sm w-full border-4 border-amber-400 shadow-2xl relative text-center flex flex-col items-center glow-reward">
+      <div id="reward-modal-icon" class="text-7xl mb-3 animate-bounce">
+        ⭐
+      </div>
+      <h3 id="reward-modal-title" class="text-2xl font-black text-slate-800 font-display">
+        ยินดีด้วย! ปลดล็อกเหรียญรางวัล
+      </h3>
+      <p id="reward-modal-desc" class="text-slate-600 text-sm mt-2 mb-6">
+        คุณหนูได้รับสติกเกอร์ใหม่แล้ว
+      </p>
+      <button class="w-full py-3 bg-amber-400 text-slate-900 font-black rounded-2xl border-b-4 border-amber-600 shadow-md hover:bg-amber-300 transition cursor-pointer"
+              onclick="closeRewardModal()">
+        ✨ เยี่ยมไปเลย! รับรางวัล ✨
+      </button>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="bg-white border-t-2 border-slate-200 py-4 px-6 text-center text-xs text-slate-400 mt-10">
+    <p class="font-medium">
+      💡 สื่อการสอนเสริมทักษะวิชาภาษาอังกฤษ ชั้นประถมศึกษาปีที่ 1 (ป.1) • รองรับเสียงอ่านภาษาอังกฤษมาตรฐานผ่าน Web Speech API
+    </p>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
