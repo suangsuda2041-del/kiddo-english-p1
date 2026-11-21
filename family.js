@@ -40,8 +40,8 @@ const famState = {
 
   // Family Album Builder
   album: {
-    studentName: 'น้องคนเก่ง',
-    selectedMembers: ['father', 'mother', 'me']
+    studentName: 'นักเรียนชั้น ป.3',
+    selectedMembers: ['father', 'mother', 'brother', 'sister', 'me']
   }
 };
 
@@ -845,12 +845,21 @@ function startFamilyMemory() {
   famState.memory.moves = 0;
   famState.memory.isLocked = false;
 
-  const sampleMembers = [
+  const samplePool = [
+    { word: 'Grandfather', icon: '👴', thai: 'คุณปู่ / คุณตา' },
+    { word: 'Grandmother', icon: '👵', thai: 'คุณย่า / คุณยาย' },
     { word: 'Father', icon: '👨', thai: 'คุณพ่อ' },
     { word: 'Mother', icon: '👩', thai: 'คุณแม่' },
-    { word: 'Brother', icon: '👦', thai: 'พี่ชาย/น้องชาย' },
-    { word: 'Sister', icon: '👧', thai: 'พี่สาว/น้องสาว' }
+    { word: 'Sister', icon: '👧', thai: 'พี่สาว / น้องสาว' },
+    { word: 'Brother', icon: '👦', thai: 'พี่ชาย / น้องชาย' },
+    { word: 'Cousin', icon: '🧑', thai: 'ลูกพี่ลูกน้อง' },
+    { word: 'Uncle', icon: '👨‍🦰', thai: 'คุณลุง / น้า / อา' },
+    { word: 'Aunt', icon: '👩‍🦱', thai: 'คุณป้า / น้า / อา' },
+    { word: 'Me', icon: '🧒', thai: 'ตัวฉันเอง' }
   ];
+
+  // สุ่ม 5 คู่ (10 ใบ) จาก 10 คำศัพท์ครอบครัว ป.3
+  const sampleMembers = [...samplePool].sort(() => 0.5 - Math.random()).slice(0, 5);
 
   let cards = [];
   sampleMembers.forEach((item, index) => {
@@ -971,15 +980,16 @@ function renderFamilyAlbum() {
   if (!optionsContainer) return;
 
   const selectableList = [
+    { id: 'grandfather', word: 'Grandfather (คุณปู่/คุณตา)', icon: '👴' },
+    { id: 'grandmother', word: 'Grandmother (คุณย่า/คุณยาย)', icon: '👵' },
     { id: 'father', word: 'Father (คุณพ่อ)', icon: '👨' },
     { id: 'mother', word: 'Mother (คุณแม่)', icon: '👩' },
-    { id: 'me', word: 'Me (ตัวฉัน)', icon: '🧒' },
-    { id: 'brother', word: 'Brother (พี่/น้องชาย)', icon: '👦' },
     { id: 'sister', word: 'Sister (พี่/น้องสาว)', icon: '👧' },
-    { id: 'baby', word: 'Baby (น้องเล็ก)', icon: '👶' },
-    { id: 'grandpa', word: 'Grandpa (คุณปู่/คุณตา)', icon: '👴' },
-    { id: 'grandma', word: 'Grandma (คุณย่า/คุณยาย)', icon: '👵' },
-    { id: 'dog', word: 'Pet Dog (สุนัข)', icon: '🐶' }
+    { id: 'brother', word: 'Brother (พี่/น้องชาย)', icon: '👦' },
+    { id: 'cousin', word: 'Cousin (ลูกพี่ลูกน้อง)', icon: '🧑' },
+    { id: 'uncle', word: 'Uncle (คุณลุง/น้า/อา)', icon: '👨‍🦰' },
+    { id: 'aunt', word: 'Aunt (คุณป้า/น้า/อา)', icon: '👩‍🦱' },
+    { id: 'me', word: 'Me (ตัวฉันเอง)', icon: '🧒' }
   ];
 
   optionsContainer.innerHTML = selectableList.map(item => {
@@ -1027,15 +1037,16 @@ function updateAlbumCardPreview() {
   if (!previewContainer) return;
 
   const iconMap = {
+    grandfather: { icon: '👴', word: 'Grandfather' },
+    grandmother: { icon: '👵', word: 'Grandmother' },
     father: { icon: '👨', word: 'Father' },
     mother: { icon: '👩', word: 'Mother' },
-    me: { icon: '🧒', word: 'Me' },
-    brother: { icon: '👦', word: 'Brother' },
     sister: { icon: '👧', word: 'Sister' },
-    baby: { icon: '👶', word: 'Baby' },
-    grandpa: { icon: '👴', word: 'Grandpa' },
-    grandma: { icon: '👵', word: 'Grandma' },
-    dog: { icon: '🐶', word: 'Puppy' }
+    brother: { icon: '👦', word: 'Brother' },
+    cousin: { icon: '🧑', word: 'Cousin' },
+    uncle: { icon: '👨‍🦰', word: 'Uncle' },
+    aunt: { icon: '👩‍🦱', word: 'Aunt' },
+    me: { icon: '🧒', word: 'Me' }
   };
 
   previewContainer.innerHTML = famState.album.selectedMembers.map(id => {

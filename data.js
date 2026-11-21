@@ -1,6 +1,6 @@
 /**
- * Kiddo English P.1 - ข้อมูลบทเรียนและคำศัพท์ภาษาอังกฤษ ป.1
- * ออกแบบตามหลักสูตรแกนกลางกลุ่มสาระการเรียนรู้ภาษาต่างประเทศ (ภาษาอังกฤษ) ชั้น ป.1
+ * Kiddo English - ข้อมูลบทเรียนและคำศัพท์ภาษาอังกฤษ
+ * ปรับปรุงเนื้อหาบทเรียน Family สำหรับระดับชั้นประถมศึกษาปีที่ 3 (ป.3)
  */
 
 const ALPHABET_DATA = [
@@ -35,21 +35,21 @@ const ALPHABET_DATA = [
 const VOCAB_CATEGORIES = [
   {
     id: 'family',
-    title: 'ครอบครัว (Family)',
+    title: 'ครอบครัว ป.3 (Family)',
     icon: '👨‍👩‍👧‍👦',
     color: '#EC4899',
     bgColor: '#FDF2F8',
     words: [
+      { word: 'Grandfather', nickname: 'Grandpa', thai: 'คุณปู่ / คุณตา', icon: '👴', phonetic: 'แกรนด์-ฟา-เธอร์', sentence: 'This is my grandfather.' },
+      { word: 'Grandmother', nickname: 'Grandma', thai: 'คุณย่า / คุณยาย', icon: '👵', phonetic: 'แกรนด์-มา-เธอร์', sentence: 'This is my grandmother.' },
       { word: 'Father', nickname: 'Dad', thai: 'คุณพ่อ', icon: '👨', phonetic: 'ฟา-เธอร์', sentence: 'This is my father.' },
       { word: 'Mother', nickname: 'Mom', thai: 'คุณแม่', icon: '👩', phonetic: 'มา-เธอร์', sentence: 'This is my mother.' },
-      { word: 'Brother', nickname: 'Bro', thai: 'พี่ชาย / น้องชาย', icon: '👦', phonetic: 'บรา-เธอร์', sentence: 'He is my brother.' },
       { word: 'Sister', nickname: 'Sis', thai: 'พี่สาว / น้องสาว', icon: '👧', phonetic: 'ซิส-เทอร์', sentence: 'She is my sister.' },
-      { word: 'Baby', nickname: 'Baby', thai: 'เด็กทารก / น้องเล็ก', icon: '👶', phonetic: 'เบบี้', sentence: 'The baby is cute.' },
-      { word: 'Grandfather', nickname: 'Grandpa', thai: 'คุณปู่ / คุณตา', icon: '👴', phonetic: 'แกรนด์ฟาเธอร์', sentence: 'This is my grandfather.' },
-      { word: 'Grandmother', nickname: 'Grandma', thai: 'คุณย่า / คุณยาย', icon: '👵', phonetic: 'แกรนด์มาเธอร์', sentence: 'This is my grandmother.' },
-      { word: 'Uncle', nickname: 'Uncle', thai: 'คุณลุง / คุณน้า / อา', icon: '👨‍🦰', phonetic: 'อังเคิล', sentence: 'He is my uncle.' },
-      { word: 'Aunt', nickname: 'Auntie', thai: 'คุณป้า / คุณน้า / อา', icon: '👩‍🦱', phonetic: 'อานต์', sentence: 'She is my aunt.' },
-      { word: 'Family', nickname: 'Home', thai: 'ครอบครัว', icon: '👨‍👩‍👧‍👦', phonetic: 'แฟมิลี่', sentence: 'I love my family.' }
+      { word: 'Brother', nickname: 'Bro', thai: 'พี่ชาย / น้องชาย', icon: '👦', phonetic: 'บรา-เธอร์', sentence: 'He is my brother.' },
+      { word: 'Cousin', nickname: 'Cousin', thai: 'ลูกพี่ลูกน้อง', icon: '🧑', phonetic: 'คัซ-ซิน', sentence: 'He is my cousin.' },
+      { word: 'Uncle', nickname: 'Uncle', thai: 'คุณลุง / คุณน้า / อา (ชาย)', icon: '👨‍🦰', phonetic: 'อัง-เคิล', sentence: 'He is my uncle.' },
+      { word: 'Aunt', nickname: 'Auntie', thai: 'คุณป้า / คุณน้า / อา (หญิง)', icon: '👩‍🦱', phonetic: 'อานต์', sentence: 'She is my aunt.' },
+      { word: 'Me', nickname: 'Me', thai: 'ตัวฉันเอง', icon: '🧒', phonetic: 'มี', sentence: 'This is me in Grade 3.' }
     ]
   },
   {
@@ -168,14 +168,14 @@ const VOCAB_CATEGORIES = [
   }
 ];
 
-// ข้อมูลละเอียดสำหรับเว็บแอป Family โดยเฉพาะ
+// ข้อมูลคำศัพท์ 10 คำเรื่อง Family ระดับชั้น ป.3
 const FAMILY_MEMBERS_TREE = [
   {
     generation: 'grandparents',
-    title: 'รุ่นคุณปู่ คุณย่า คุณตา คุณยาย (Grandparents)',
+    title: 'รุ่นปู่ย่าตายาย (Grandparents)',
     members: [
       {
-        id: 'grandpa',
+        id: 'grandfather',
         word: 'Grandfather',
         shortName: 'Grandpa',
         thai: 'คุณปู่ / คุณตา',
@@ -185,7 +185,7 @@ const FAMILY_MEMBERS_TREE = [
         soundGreeting: 'Hello my grandchild!'
       },
       {
-        id: 'grandma',
+        id: 'grandmother',
         word: 'Grandmother',
         shortName: 'Grandma',
         thai: 'คุณย่า / คุณยาย',
@@ -198,26 +198,26 @@ const FAMILY_MEMBERS_TREE = [
   },
   {
     generation: 'parents',
-    title: 'รุ่นคุณพ่อ คุณแม่ คุณลุง คุณป้า (Parents & Relatives)',
+    title: 'รุ่นพ่อแม่ ลุงป้าน้าอา (Parents & Relatives)',
     members: [
       {
         id: 'father',
         word: 'Father',
-        shortName: 'Dad / Daddy',
+        shortName: 'Dad',
         thai: 'คุณพ่อ',
         icon: '👨',
         phonetic: 'ฟา-เธอร์',
-        sentence: 'This is my father. He is strong.',
-        soundGreeting: 'Good job, kiddo!'
+        sentence: 'This is my father. He is hardworking.',
+        soundGreeting: 'Good job, keep studying hard!'
       },
       {
         id: 'mother',
         word: 'Mother',
-        shortName: 'Mom / Mommy',
+        shortName: 'Mom',
         thai: 'คุณแม่',
         icon: '👩',
         phonetic: 'มา-เธอร์',
-        sentence: 'This is my mother. I love my mother.',
+        sentence: 'This is my mother. She loves cooking.',
         soundGreeting: 'I love you so much!'
       },
       {
@@ -227,7 +227,7 @@ const FAMILY_MEMBERS_TREE = [
         thai: 'คุณลุง / คุณน้า / อา (ชาย)',
         icon: '👨‍🦰',
         phonetic: 'อัง-เคิล',
-        sentence: 'He is my uncle. He is funny.',
+        sentence: 'He is my uncle. He likes sports.',
         soundGreeting: 'Hey there champ!'
       },
       {
@@ -237,24 +237,44 @@ const FAMILY_MEMBERS_TREE = [
         thai: 'คุณป้า / คุณน้า / อา (หญิง)',
         icon: '👩‍🦱',
         phonetic: 'อานต์',
-        sentence: 'She is my aunt. She is beautiful.',
+        sentence: 'She is my aunt. She is very helpful.',
         soundGreeting: 'Hello sweetie!'
       }
     ]
   },
   {
     generation: 'children',
-    title: 'รุ่นลูกและสัตว์เลี้ยง (Children & Pets)',
+    title: 'รุ่นพี่น้องและตัวฉัน (Children & Cousins)',
     members: [
       {
         id: 'brother',
         word: 'Brother',
-        shortName: 'Bro',
+        shortName: 'Brother',
         thai: 'พี่ชาย / น้องชาย',
         icon: '👦',
         phonetic: 'บรา-เธอร์',
-        sentence: 'This is my brother. We play together.',
-        soundGreeting: 'Let\'s play games!'
+        sentence: 'This is my brother. We ride bikes together.',
+        soundGreeting: 'Let us play together!'
+      },
+      {
+        id: 'sister',
+        word: 'Sister',
+        shortName: 'Sister',
+        thai: 'พี่สาว / น้องสาว',
+        icon: '👧',
+        phonetic: 'ซิส-เทอร์',
+        sentence: 'This is my sister. She loves reading books.',
+        soundGreeting: 'Let us do homework together!'
+      },
+      {
+        id: 'cousin',
+        word: 'Cousin',
+        shortName: 'Cousin',
+        thai: 'ลูกพี่ลูกน้อง',
+        icon: '🧑',
+        phonetic: 'คัซ-ซิน',
+        sentence: 'This is my cousin. We are good friends.',
+        soundGreeting: 'Nice to see you, cousin!'
       },
       {
         id: 'me',
@@ -263,114 +283,80 @@ const FAMILY_MEMBERS_TREE = [
         thai: 'ตัวฉันเอง',
         icon: '🧒',
         phonetic: 'มี',
-        sentence: 'This is me! I am a good student.',
-        soundGreeting: 'I am so happy!'
-      },
-      {
-        id: 'sister',
-        word: 'Sister',
-        shortName: 'Sis',
-        thai: 'พี่สาว / น้องสาว',
-        icon: '👧',
-        phonetic: 'ซิส-เทอร์',
-        sentence: 'This is my sister. She is cute.',
-        soundGreeting: 'Let\'s sing a song!'
-      },
-      {
-        id: 'baby',
-        word: 'Baby',
-        shortName: 'Baby',
-        thai: 'เด็กทารก / น้องเล็ก',
-        icon: '👶',
-        phonetic: 'เบ-บี้',
-        sentence: 'This is our baby. Baby is smiling.',
-        soundGreeting: 'Goo goo gaga!'
-      },
-      {
-        id: 'dog',
-        word: 'Pet Dog',
-        shortName: 'Puppy',
-        thai: 'เจ้าตูบสัตว์เลี้ยง',
-        icon: '🐶',
-        phonetic: 'เพ็ท ด็อก',
-        sentence: 'This is my dog. Woof woof!',
-        soundGreeting: 'Woof! Woof!'
+        sentence: 'This is me! I am a student in Grade 3.',
+        soundGreeting: 'I am proud to be in Grade 3!'
       }
     ]
   }
 ];
 
-// ประโยคสนทนาภาษาอังกฤษ ป.1 เรื่องครอบครัว
+// บทสนทนาภาษาอังกฤษเรื่องครอบครัว ระดับ ป.3
 const FAMILY_CONVERSATIONS = [
   {
-    q: 'Who is this?',
-    qThai: 'นี่คือใครหรือ?',
-    a: 'This is my father.',
-    aThai: 'นี่คือคุณพ่อของฉัน',
-    icon: '👨'
-  },
-  {
-    q: 'Who is she?',
-    qThai: 'เธอคือใคร?',
-    a: 'She is my mother.',
-    aThai: 'เธอคือคุณแม่ของฉัน',
-    icon: '👩'
-  },
-  {
-    q: 'Who is he?',
-    qThai: 'เขาคือใคร?',
+    q: 'Who is that man?',
+    qThai: 'ผู้ชายคนนั้นคือใคร?',
     a: 'He is my grandfather.',
     aThai: 'เขาคือคุณปู่/คุณตาของฉัน',
     icon: '👴'
   },
   {
-    q: 'Do you love your family?',
-    qThai: 'หนูรักครอบครัวไหมจ๊ะ?',
-    a: 'Yes! I love my family.',
-    aThai: 'รักครับ/ค่ะ! หนูรักครอบครัวของหนูมาก',
-    icon: '❤️'
+    q: 'Who is that woman?',
+    qThai: 'ผู้หญิงคนนั้นคือใคร?',
+    a: 'She is my aunt.',
+    aThai: 'เธอคือคุณป้า/คุณน้า/คุณอาของฉัน',
+    icon: '👩‍🦱'
   },
   {
-    q: 'How many people in your family?',
-    qThai: 'ครอบครัวของหนูมีกี่คน?',
-    a: 'There are four people in my family.',
-    aThai: 'มี 4 คนในครอบครัวของฉัน',
+    q: 'Who is this boy?',
+    qThai: 'เด็กผู้ชายคนนี้คือใคร?',
+    a: 'He is my cousin.',
+    aThai: 'เขาคือลูกพี่ลูกน้องของฉัน',
+    icon: '🧑'
+  },
+  {
+    q: 'How many people are there in your family?',
+    qThai: 'ในครอบครัวของคุณมีกี่คน?',
+    a: 'There are five people in my family.',
+    aThai: 'มี 5 คนในครอบครัวของฉัน',
     icon: '👨‍👩‍👧‍👦'
+  },
+  {
+    q: 'Do you have any brothers or sisters?',
+    qThai: 'คุณมีพี่น้องไหม?',
+    a: 'Yes, I have one brother and one sister.',
+    aThai: 'มีครับ/ค่ะ ฉันมีพี่/น้องชาย 1 คน และพี่/น้องสาว 1 คน',
+    icon: '👧'
   }
 ];
 
 // ข้อมูลสำหรับเพลง Finger Family Song
 const FINGER_FAMILY_SONG = [
-  { role: 'Daddy', name: 'Daddy Finger', finger: '👍 นิ้วโป้ง', lyric: 'Daddy finger, Daddy finger, where are you? Here I am, here I am. How do you do?', icon: '👨' },
-  { role: 'Mommy', name: 'Mommy Finger', finger: '☝️ นิ้วชี้', lyric: 'Mommy finger, Mommy finger, where are you? Here I am, here I am. How do you do?', icon: '👩' },
-  { role: 'Brother', name: 'Brother Finger', finger: '🖕 นิ้วกลาง', lyric: 'Brother finger, Brother finger, where are you? Here I am, here I am. How do you do?', icon: '👦' },
-  { role: 'Sister', name: 'Sister Finger', finger: '💍 นิ้วนาง', lyric: 'Sister finger, Sister finger, where are you? Here I am, here I am. How do you do?', icon: '👧' },
-  { role: 'Baby', name: 'Baby Finger', finger: '👶 นิ้วก้อย', lyric: 'Baby finger, Baby finger, where are you? Here I am, here I am. How do you do?', icon: '👶' }
+  { role: 'Daddy', name: 'Daddy Finger (Father)', finger: '👍 นิ้วโป้ง', lyric: 'Daddy finger, Daddy finger, where are you? Here I am, here I am. How do you do?', icon: '👨' },
+  { role: 'Mommy', name: 'Mommy Finger (Mother)', finger: '☝️ นิ้วชี้', lyric: 'Mommy finger, Mommy finger, where are you? Here I am, here I am. How do you do?', icon: '👩' },
+  { role: 'Brother', name: 'Brother Finger (Brother)', finger: '🖕 นิ้วกลาง', lyric: 'Brother finger, Brother finger, where are you? Here I am, here I am. How do you do?', icon: '👦' },
+  { role: 'Sister', name: 'Sister Finger (Sister)', finger: '💍 นิ้วนาง', lyric: 'Sister finger, Sister finger, where are you? Here I am, here I am. How do you do?', icon: '👧' },
+  { role: 'Cousin', name: 'Cousin Finger (Cousin)', finger: '👶 นิ้วก้อย', lyric: 'Cousin finger, Cousin finger, where are you? Here I am, here I am. How do you do?', icon: '🧑' }
 ];
 
-// ชุดคำศัพท์สำหรับเกมสะกดคำ (Spelling Game)
+// ชุดคำศัพท์สำหรับเกมสะกดคำ (Spelling Game) เน้นคำศัพท์ ป.3
 const SPELLING_WORDS = [
-  { word: 'DAD', icon: '👨', hint: 'คุณพ่อ' },
-  { word: 'MOM', icon: '👩', hint: 'คุณแม่' },
-  { word: 'BABY', icon: '👶', hint: 'น้องทารก' },
-  { word: 'CAT', icon: '🐱', hint: 'แมวเหมียว' },
-  { word: 'DOG', icon: '🐶', hint: 'เจ้าตูบ' },
-  { word: 'SUN', icon: '☀️', hint: 'พระอาทิตย์' },
-  { word: 'HAT', icon: '👒', hint: 'หมวกสวย' },
-  { word: 'RED', icon: '🔴', hint: 'สีแดง' },
-  { word: 'PIG', icon: '🐷', hint: 'น้องหมู' },
-  { word: 'PEN', icon: '🖊️', hint: 'ปากกา' },
-  { word: 'BOX', icon: '📦', hint: 'กล่อง' },
-  { word: 'EGG', icon: '🥚', hint: 'ไข่ไก่' }
+  { word: 'FATHER', icon: '👨', hint: 'คุณพ่อ' },
+  { word: 'MOTHER', icon: '👩', hint: 'คุณแม่' },
+  { word: 'SISTER', icon: '👧', hint: 'พี่สาว/น้องสาว' },
+  { word: 'BROTHER', icon: '👦', hint: 'พี่ชาย/น้องชาย' },
+  { word: 'COUSIN', icon: '🧑', hint: 'ลูกพี่ลูกน้อง' },
+  { word: 'UNCLE', icon: '👨‍🦰', hint: 'คุณลุง/น้า/อา (ชาย)' },
+  { word: 'AUNT', icon: '👩‍🦱', hint: 'คุณป้า/น้า/อา (หญิง)' },
+  { word: 'FAMILY', icon: '🏡', hint: 'ครอบครัว' }
 ];
 
 // รางวัลสติกเกอร์ที่เด็กๆ สามารถปลดล็อกได้
 const STICKER_REWARDS = [
   { id: 'stk_1', name: 'ดาวดวงแรก ⭐', icon: '⭐', desc: 'เริ่มฝึกฝนภาษาอังกฤษ', starsNeeded: 5 },
-  { id: 'stk_fam', name: 'ครอบครัวสุขสันต์ 👨‍👩‍👧‍👦', icon: '🏡', desc: 'เรียนรู้สมาชิกครอบครัวครบถ้วน', starsNeeded: 12 },
+  { id: 'stk_fam', name: 'ครอบครัวสุขสันต์ ป.3 👨‍👩‍👧‍👦', icon: '🏡', desc: 'เรียนรู้สมาชิกครอบครัว 10 คนครบถ้วน', starsNeeded: 12 },
   { id: 'stk_2', name: 'หนูน้อย A-Z 🔤', icon: '🔤', desc: 'เรียนรู้พยัญชนะครบ 26 ตัว', starsNeeded: 25 },
   { id: 'stk_3', name: 'ผู้พิทักษ์ตัวเลข 🔢', icon: '🎯', desc: 'นับเลข 1-10 คล่องแคล่ว', starsNeeded: 40 },
   { id: 'stk_4', name: 'ยอดนักสะกดคำ 🐝', icon: '🐝', desc: 'ชนะเกมสะกดคำ 3 รอบ', starsNeeded: 60 },
   { id: 'stk_5', name: 'จอมพลังความจำ 🧠', icon: '🏆', desc: 'ชนะเกมจับคู่การ์ด', starsNeeded: 80 },
-  { id: 'stk_6', name: 'ซูเปอร์สตาร์ภาษาอังกฤษ 👑', icon: '👑', desc: 'สะสมดาวครบ 100 ดวง', starsNeeded: 100 }
+  { id: 'stk_6', name: 'ซูเปอร์สตาร์ภาษาอังกฤษ ป.3 👑', icon: '👑', desc: 'สะสมดาวครบ 100 ดวง', starsNeeded: 100 }
 ];
