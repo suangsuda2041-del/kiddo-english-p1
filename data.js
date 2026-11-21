@@ -290,42 +290,70 @@ const FAMILY_MEMBERS_TREE = [
   }
 ];
 
-// บทสนทนาภาษาอังกฤษเรื่องครอบครัว ระดับ ป.3
+// บทสนทนาภาษาอังกฤษเรื่องครอบครัว ระดับ ป.3 (โครงสร้าง: Who is this? -> This is my ...)
 const FAMILY_CONVERSATIONS = [
   {
-    q: 'Who is that man?',
-    qThai: 'ผู้ชายคนนั้นคือใคร?',
-    a: 'He is my grandfather.',
-    aThai: 'เขาคือคุณปู่/คุณตาของฉัน',
+    q: 'Who is this?',
+    qThai: 'นี่คือใคร?',
+    a: 'This is my father.',
+    aThai: 'นี่คือคุณพ่อของฉัน',
+    icon: '👨'
+  },
+  {
+    q: 'Who is this?',
+    qThai: 'นี่คือใคร?',
+    a: 'This is my mother.',
+    aThai: 'นี่คือคุณแม่ของฉัน',
+    icon: '👩'
+  },
+  {
+    q: 'Who is this?',
+    qThai: 'นี่คือใคร?',
+    a: 'This is my grandfather.',
+    aThai: 'นี่คือคุณปู่/คุณตาของฉัน',
     icon: '👴'
   },
   {
-    q: 'Who is that woman?',
-    qThai: 'ผู้หญิงคนนั้นคือใคร?',
-    a: 'She is my aunt.',
-    aThai: 'เธอคือคุณป้า/คุณน้า/คุณอาของฉัน',
+    q: 'Who is this?',
+    qThai: 'นี่คือใคร?',
+    a: 'This is my grandmother.',
+    aThai: 'นี่คือคุณย่า/คุณยายของฉัน',
+    icon: '👵'
+  },
+  {
+    q: 'Who is this?',
+    qThai: 'นี่คือใคร?',
+    a: 'This is my brother.',
+    aThai: 'นี่คือพี่ชาย/น้องชายของฉัน',
+    icon: '👦'
+  },
+  {
+    q: 'Who is this?',
+    qThai: 'นี่คือใคร?',
+    a: 'This is my sister.',
+    aThai: 'นี่คือพี่สาว/น้องสาวของฉัน',
+    icon: '👧'
+  },
+  {
+    q: 'Who is this?',
+    qThai: 'นี่คือใคร?',
+    a: 'This is my uncle.',
+    aThai: 'นี่คือคุณลุง/น้า/อาของฉัน',
+    icon: '👨‍🦰'
+  },
+  {
+    q: 'Who is this?',
+    qThai: 'นี่คือใคร?',
+    a: 'This is my aunt.',
+    aThai: 'นี่คือคุณป้า/น้า/อาของฉัน',
     icon: '👩‍🦱'
   },
   {
-    q: 'Who is this boy?',
-    qThai: 'เด็กผู้ชายคนนี้คือใคร?',
-    a: 'He is my cousin.',
-    aThai: 'เขาคือลูกพี่ลูกน้องของฉัน',
+    q: 'Who is this?',
+    qThai: 'นี่คือใคร?',
+    a: 'This is my cousin.',
+    aThai: 'นี่คือลูกพี่ลูกน้องของฉัน',
     icon: '🧑'
-  },
-  {
-    q: 'How many people are there in your family?',
-    qThai: 'ในครอบครัวของคุณมีกี่คน?',
-    a: 'There are five people in my family.',
-    aThai: 'มี 5 คนในครอบครัวของฉัน',
-    icon: '👨‍👩‍👧‍👦'
-  },
-  {
-    q: 'Do you have any brothers or sisters?',
-    qThai: 'คุณมีพี่น้องไหม?',
-    a: 'Yes, I have one brother and one sister.',
-    aThai: 'มีครับ/ค่ะ ฉันมีพี่/น้องชาย 1 คน และพี่/น้องสาว 1 คน',
-    icon: '👧'
   }
 ];
 
